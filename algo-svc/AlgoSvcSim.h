@@ -20,7 +20,9 @@ public:
                        const char *correlationId, uint64_t deliveryTag) override;
 
 private:
-    char _videoOutBuff[1280 * 720 * 3]{};
+//    char _videoOutBuff[1280 * 720 * 3]{};
+    char _videoOutBuff[1024 * 25]{};
+
     AmqpPub &_amqpPub;
 
     void SendSimulatedDecodedFrame(uint32_t frameId);

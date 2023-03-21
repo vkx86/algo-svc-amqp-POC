@@ -20,8 +20,11 @@ public:
                        const char *correlationId, uint64_t deliveryTag) override;
 
 private:
-//    char _videoOutBuff[1280 * 720 * 3]{};
-    char _videoOutBuff[1024 * 25]{};
+    char _videoOutBuff[
+        //1280 * 720 * 3 //2,764,800 //delay exceeded at ~ 20 messages on my VM
+        1024 * 1500 //delay exceeded at ~ 2000 messages on my VM
+        //1024 * 1000 //delay exceeded at ~ 41325 messages on my VM
+    ];
 
     AmqpPub &_amqpPub;
 

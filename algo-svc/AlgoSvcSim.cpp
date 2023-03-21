@@ -48,6 +48,11 @@ void AlgoSvcSim::OnMsgReceived(const char *fromExchange, const char *fromRoute, 
                              << diff.tv_sec
                              << " | nano-sec: " << diff.tv_nsec;
 
+    if(diff.tv_nsec > MAX_DELAY){
+        BOOST_LOG_TRIVIAL(trace) << "Delay exceeded maximum of nano-secs: " << MAX_DELAY;
+        exit(1);
+    }
+
     usleep(25000);
     SendSimulatedDecodedFrame(pFrame->FrameId);
 }

@@ -5,6 +5,8 @@
 #ifndef ALGO_SVC_AMPQ_POC_COMMONDEFS_H
 #define ALGO_SVC_AMPQ_POC_COMMONDEFS_H
 
+#define MAX_DELAY 1 * 33333 * 1000 // 1 frame at 30Hz
+
 #define AMQP_CONN_STR "amqp://guest:guest@localhost"
 
 #define EXCH_VIDEO_IN "exchange.topic.video.in"

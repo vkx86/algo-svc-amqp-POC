@@ -12,12 +12,27 @@ AmqpSub::AmqpSub(const std::string& conn, const std::vector<std::pair<const char
     auto opts = AmqpClient::Channel::OpenOpts::FromUri(conn);
     _channel = AmqpClient::Channel::Open(opts);
 
-    auto queue = _channel->DeclareQueue(sweeperQueue);
+    AmqpClient::Table args;
+    args.insert({"x-message-ttl", 1000});
+    auto queue = _channel->DeclareQueue(sweeperQueue, false, false, false, false, args);
+
+
+//    args.insert({"x-queue-type", "stream"});
+//    args.insert({"x-max-length-bytes", 20000000000});
+//    args.insert({"x-stream-max-segment-size-bytes", 100000000});
+//    auto queue = _channel->DeclareQueue(sweeperQueue, false, true, false, false, args);
+
+    //auto queue = _channel->DeclareQueue(sweeperQueue);
+
     for (const auto& current:exchanges_N_routes) {
         _channel->DeclareExchange(current.first, GetExchangeType(current.first), false, true);
         _channel->BindQueue(queue, current.first, current.second);
     }
     _consumer = _channel->BasicConsume(queue);
+
+//    AmqpClient::Table args2;
+//    args.insert({"x-stream-offset", "last"});
+//    _consumer = _channel->BasicConsume(queue, "", true, false, true, 10, args2);
 
     _handler = handler;
     _isRunning = true;
